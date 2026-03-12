@@ -1,0 +1,42 @@
+import sounddevice as sd
+import scipy.io.wavfile as wav
+import whisper
+import os
+
+# USB device
+sd.default.device = 11
+
+# Whisper
+model = whisper.load_model("base")
+
+samplerate = 44100   # IMPORTANT change
+duration = 6
+
+while True:
+
+    print("\nSpeak...")
+
+    recording = sd.rec(int(duration * samplerate),
+                       samplerate=samplerate,
+                       channels=1,
+                       dtype="int16")
+
+    sd.wait()
+    wav.write("voice.wav", samplerate, recording)
+
+    print("Transcribing...")
+
+    result = model.transcribe("voice.wav", fp16=False)
+
+    text = result["text"].strip()
+
+    print("You:", text)
+
+    if text == "":
+        continue
+
+  response = os.popen(f'ollama run qwen:0.5b "{text}"').read()
+
+    print("Qwen:", response)
+
+    os.system(f'echo "{response}" | espeak --stdout | aplay -D plughw:2,0')
