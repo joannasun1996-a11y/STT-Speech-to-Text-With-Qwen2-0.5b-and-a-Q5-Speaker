@@ -25,7 +25,7 @@ if device is None:
 # use correct samplerate automatically
 samplerate = int(sd.query_devices(device)['default_samplerate'])
 
-duration = 5
+duration = 15
 
 print("Say 'hello' to start.")
 
