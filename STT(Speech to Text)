@@ -51,7 +51,7 @@ int(duration * samplerate),
     print("Volume:", volume)
 
     # ignore silence
-    if volume < 0.02:
+    if volume < 0.2:
         print("Too quiet, ignoring...")
         continue
 
@@ -88,7 +88,7 @@ int(duration * samplerate),
             volume = np.max(np.abs(audio))
             print("Volume:", volume)
 
-            if volume < 0.02:
+            if volume < 0.2:
                 print("Too quiet, ignoring...")
                 continue
 
